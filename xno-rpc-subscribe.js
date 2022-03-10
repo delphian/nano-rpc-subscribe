@@ -38,28 +38,32 @@ exports.nSub = function(config) {
 		this.pubSub.subscribe(`${account}:receivable`, callback);
 	};
 	this.publishReceivableBlocksAsync = async function(accounts, options) {
-        	let accountsReceivableBlocks = await this.nRpc.getReceivableBlocksInfoAsync(accounts, { sort: 'descending' });
-                let accountsReceivable = Object.keys(accountsReceivableBlocks);
-                for (let x = 0; x < accountsReceivable.length; x++) {
-                	let account = accountsReceivable[x];
-                        let receivableBlocks = accountsReceivableBlocks[account];
-                        if (typeof this.history[account] == 'undefined')
-                        	this.history[account] = {
-                                	receivable: []
-                                };
-                        for (let y = 0; y < receivableBlocks.length; y++) {
-                        	let receivableBlock = receivableBlocks[y];
-                                if (this.history[account].receivable.includes(receivableBlock.height) == false) {
-					let response = {
-						type: 'receivable',
-						data: receivableBlock
-					};
-                               		this.pubSub.publish(`${account}:receivable`, response);
-                                        this.pubSub.publish(`${account}`, response);
-                                        this.history[account].receivable.push(receivableBlock.height);
-                                }
+		try {
+	        	let accountsReceivableBlocks = await this.nRpc.getReceivableBlocksInfoAsync(accounts, { sort: 'descending' });
+                	let accountsReceivable = Object.keys(accountsReceivableBlocks);
+	                for (let x = 0; x < accountsReceivable.length; x++) {
+        	        	let account = accountsReceivable[x];
+                	        let receivableBlocks = accountsReceivableBlocks[account];
+	                        if (typeof this.history[account] == 'undefined')
+        	                	this.history[account] = {
+                	                	receivable: []
+                        	        };
+	                        for (let y = 0; y < receivableBlocks.length; y++) {
+        	                	let receivableBlock = receivableBlocks[y];
+                	                if (this.history[account].receivable.includes(receivableBlock.height) == false) {
+						let response = {
+							type: 'receivable',
+							data: receivableBlock
+						};
+                	               		this.pubSub.publish(`${account}:receivable`, response);
+                        	                this.pubSub.publish(`${account}`, response);
+                                	        this.history[account].receivable.push(receivableBlock.height);
+	                                }
+        	        	}
                 	}
-                }
+		} catch (err) {
+			console.error(err);
+		}
 	};
 	this.start = function() {
 		if (this.timerId != null)

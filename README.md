@@ -1,2 +1,2 @@
-# nano-rpc-subscribe
-Nano crypto currency RPC pubsub client for Node.js
+# xno-rpc-subscribe
+XNO crypto currency RPC pubsub client for Node.js

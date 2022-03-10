@@ -1,8 +1,8 @@
 {
-  "name": "nano-rpc-pubsub",
+  "name": "xno-rpc-pubsub",
   "version": "1.0.0",
-  "description": "Nano currency publish subscriber interface to nano-rpc-client",
-  "main": "nano-rpc-subscribe.js",
+  "description": "Nano currency publish subscriber interface to xno-rpc-client",
+  "main": "xno-rpc-subscribe.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
